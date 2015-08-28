@@ -10,16 +10,12 @@ class DepartmentUI implements UI
             return ;
         }
 
-        $tpl = array();       
-        javascript('/jquery/');
+        $tpl = array();
+        javascript('jquery');
         javascriptMod('intern', 'manager');
         javascriptMod('intern', 'editDepartment');
 
-
         return PHPWS_Template::process($tpl, 'intern', 'edit_department.tpl');
-
     }
 
 }
-
-?>

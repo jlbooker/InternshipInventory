@@ -51,37 +51,31 @@ class AdminRest {
 		$db = \Database::newDB();
 		$pdo = $db->getPDO();
 
-		$sql = "SELECT username, id 
+		$sql = "SELECT username, id
 		FROM intern_admin
 		WHERE username=:user and department_id=:dept";
 
 		$sth = $pdo->prepare($sql);
-		
+
 		$sth->execute(array('user'=>$user, 'dept'=>$dept));
 
 		$result = $sth->fetchAll(PDO::FETCH_ASSOC);
 
-		if (sizeof($result) > 0)
-		{
-
+		if (sizeof($result) > 0) {
 			header('HTTP/1.1 500 Internal Server Error');
 			echo("Multiple usernames in the same department.");
             exit;
 		}
 
 		//Check to see if the username is real
-		$sql = "SELECT username
-		FROM users
-		WHERE username=:user";
+		$sql = "SELECT username FROM users WHERE username = :user";
 
 		$sth = $pdo->prepare($sql);
-		
+
 		$sth->execute(array('user'=>$user));
 
 		$result = $sth->fetchAll(PDO::FETCH_ASSOC);
-		if (sizeof($result) == 0)
-		{
-
+		if (sizeof($result) == 0) {
 			header('HTTP/1.1 500 Internal Server Error');
 			echo("Please enter a valid username.");
             exit;
@@ -89,9 +83,9 @@ class AdminRest {
 
 		$sql = "INSERT INTO intern_admin (id, username, department_id)
 				VALUES (nextval('intern_admin_seq'), :user, :dept)";
-	
+
 		$sth = $pdo->prepare($sql);
-		
+
 		$sth->execute(array('user'=>$user, 'dept'=>$dept));
 	}
 
@@ -103,11 +97,10 @@ class AdminRest {
 		$pdo = $db->getPDO();
 
 
-		$sql = "DELETE FROM intern_admin
-				WHERE id = :id";
-	
+		$sql = "DELETE FROM intern_admin WHERE id = :id";
+
 		$sth = $pdo->prepare($sql);
-		
+
 		$sth->execute(array('id'=>$id));
 	}
 
@@ -125,13 +118,12 @@ class AdminRest {
 				ON 	 intern_admin.department_id = intern_department.id
 				INNER JOIN users
 				ON intern_admin.username = users.username";
-		
+
 		$sth = $pdo->prepare($sql);
-		
+
 		$sth->execute();
 		$result = $sth->fetchAll(PDO::FETCH_ASSOC);
 
 		return $result;
 	}
 }
-?>

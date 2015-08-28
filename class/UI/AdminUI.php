@@ -14,14 +14,11 @@ class AdminUI implements UI {
             return false;
         }
 
-
         $tpl = array();
 
         javascript('jquery');
         javascriptMod('intern', 'searchAdmin');
 
-
         return PHPWS_Template::process($tpl, 'intern','edit_admin.tpl');
-
     }
 }
